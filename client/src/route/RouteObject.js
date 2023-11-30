@@ -9,12 +9,6 @@ const getRoutes = () => ({
     path: '/',
     element: Homepage,
     layout: GenericLayout
-  },
-  home2: {
-    title: 'Homepage2',
-    path: '/',
-    element: Homepage,
-    layout: GenericLayout
   }
 })
 
