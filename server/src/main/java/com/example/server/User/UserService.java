@@ -19,7 +19,7 @@ public class UserService {
     }
 
     public void addNewUser(User user)  {
-        Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
+        Optional<User> optionalUser = userRepository.findUserById(user.getId());
         if(optionalUser.isPresent()){
             throw new IllegalStateException("email taken");
         }
@@ -29,7 +29,7 @@ public class UserService {
     public void deleteUser(Long userId) {
         boolean exists = userRepository.existsById(userId);
         if(!exists){
-            throw new IllegalStateException("student with "+userId+" does not exist");
+            throw new IllegalStateException("user with "+userId+" does not exist");
         }
         userRepository.deleteById(userId);
     }
