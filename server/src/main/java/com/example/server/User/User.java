@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
-@Table
+@Table(name = "users")
 public class User {
     @Id
     @SequenceGenerator(name = "user_sequence",sequenceName = "user_sequence",allocationSize = 1)
