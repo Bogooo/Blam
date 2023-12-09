@@ -11,10 +11,12 @@ import java.util.Optional;
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository){
+    public ReviewService(ReviewRepository reviewRepository,UserRepository userRepository){
         this.reviewRepository=reviewRepository;
+        this.userRepository=userRepository;
     }
 
     public List<Review> GetReviews() {
@@ -30,10 +32,10 @@ public class ReviewService {
     }
 
     public void deleteReview(Long reviewId) {
-        boolean exists = userRepository.existsById(userId);
+        boolean exists = reviewRepository.existsById(reviewId);
         if(!exists){
-            throw new IllegalStateException("user with "+userId+" does not exist");
+            throw new IllegalStateException("review with "+reviewId+" does not exist");
         }
-        userRepository.deleteById(userId);
+        reviewRepository.deleteById(reviewId);
     }
 }
