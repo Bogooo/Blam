@@ -1,7 +1,5 @@
 package com.example.server.User;
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.time.Period;
 
 @Entity
 @Table(name = "users")
