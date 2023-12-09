@@ -2,12 +2,32 @@ import RouteWrapper from './RouteWrapper'
 import { generatePath } from 'react-router'
 import Homepage from '../components/pages'
 import GenericLayout from '../components/layouts/GenericLayout'
+import MoviePage from '../components/pages/MoviePage'
+import ActorPage from '../components/pages/ActorPage'
 
 const getRoutes = () => ({
   home: {
     title: 'Homepage',
     path: '/',
     element: Homepage,
+    layout: GenericLayout
+  },
+  movie: {
+    title: 'MoviePage',
+    path: '/movie',
+    element: MoviePage,
+    layout: GenericLayout
+  },
+  actor: {
+    title: 'ActorPage',
+    path: '/actor',
+    element: ActorPage,
+    layout: GenericLayout
+  },
+  admin: {
+    title: 'AdminPage',
+    path: '/admin',
+    element: MoviePage,
     layout: GenericLayout
   }
 })
