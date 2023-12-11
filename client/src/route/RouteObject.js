@@ -4,6 +4,8 @@ import Homepage from '../components/pages'
 import GenericLayout from '../components/layouts/GenericLayout'
 import MoviePage from '../components/pages/MoviePage'
 import ActorPage from '../components/pages/ActorPage'
+import AdminPage from '../components/pages/AdminPage'
+import FullLayout from '../components/layouts/FullLayout'
 
 const getRoutes = () => ({
   home: {
@@ -27,8 +29,8 @@ const getRoutes = () => ({
   admin: {
     title: 'AdminPage',
     path: '/admin',
-    element: MoviePage,
-    layout: GenericLayout
+    element: AdminPage,
+    layout: FullLayout
   }
 })
 
