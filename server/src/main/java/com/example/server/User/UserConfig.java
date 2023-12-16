@@ -7,7 +7,7 @@ import java.util.List;
 @Configuration
 public class UserConfig {
     @Bean
-    CommandLineRunner commandLineRunner(UserRepository userRepository){
+    CommandLineRunner commandLineRunnerUser(UserRepository userRepository){
         return args -> {
             User bogdan = new User("Bogdan","b@gamil.com", "bogdan",Boolean.FALSE);
             User lisandra = new User("Lisandra","l@gamil.com","lisandra",Boolean.TRUE);

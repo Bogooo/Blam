@@ -10,7 +10,7 @@ import java.util.List;
 @Configuration
 public class ReviewConfig {
     @Bean
-    CommandLineRunner commandLineRunner(ReviewRepository reviewRepository){
+    CommandLineRunner commandLineRunnerReview(ReviewRepository reviewRepository){
         return args -> {
             User bogdan = new User("Bogdan","b@gamil.com", "bogdan",Boolean.FALSE);
             Review r1 = new Review("primul mesaj",bogdan, LocalDate.now(),9.5f);

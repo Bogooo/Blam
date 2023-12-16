@@ -21,7 +21,11 @@ public class UserController {
 
     @PostMapping
     public void registerUser(@RequestBody User user){
-        this.userService.addNewUser(user);
+        try {
+            this.userService.addNewUser(user);
+        } catch (InvalidException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @DeleteMapping(path = "{userId}")
