@@ -21,7 +21,6 @@ public class Review {
     private LocalDate data;
     private Float rating;
 
-    @Id
     @SequenceGenerator(name = "idf_sequence",sequenceName = "idf_sequence",allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,

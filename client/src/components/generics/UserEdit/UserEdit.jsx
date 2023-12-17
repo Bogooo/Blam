@@ -4,14 +4,20 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import UserCommentsList from '../UserCommentsList'
 
-const schema = yup
-  .object({
-    name: yup.string().required(),
-    email: yup.string().required(),
-    pass: yup.string().required(),
-    isAdmin: yup.bool()
-  })
-  .required()
+const schema = yup.object({
+  name: yup.string().required(),
+  email: yup.string().required().email('Invalid email format').matches(
+    // Regular expression for validating email addresses
+    /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    'Invalid email format'
+  ),
+  pass: yup.string().required().min(8, 'Password must be at least 8 characters').matches(
+    // Regular expression for validating password criteria
+    /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[A-Za-z0-9!@#$%^&*()_+]{8,}$/,
+    'Invalid password format: Minimum 8 characters, at least one uppercase letter, one number, and one special character'
+  ),
+  isAdmin: yup.bool()
+}).required()
 
 function UserEdit () {
   const {

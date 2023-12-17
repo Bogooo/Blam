@@ -15,8 +15,7 @@ public class ReviewConfig {
             User bogdan = new User("Bogdan","b@gamil.com", "bogdan",Boolean.FALSE);
             Review r1 = new Review("primul mesaj",bogdan, LocalDate.now(),9.5f);
 
-
-            reviewRepository.saveAll(List.of(r1));
+//            reviewRepository.saveAll(List.of(r1));
         };
     }
 }
