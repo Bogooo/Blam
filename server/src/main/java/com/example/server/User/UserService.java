@@ -28,19 +28,108 @@ public class UserService {
     }
 
     public void addNewUser(User user) throws InvalidException  {
-        Optional<User> optionalUser = userRepository.findUserById(user.getId());
-        if(optionalUser.isPresent()){
+        Optional<User> optionalUser1 = userRepository.findUserById(user.getId());
+        Optional<User> optionalUser2 = userRepository.findUserByEmail(user.getEmail());
+        if(optionalUser1.isPresent()){
+            throw new IllegalStateException("already registered user");
+        }
+
+        if(isEmailValid(user.getEmail())==false) {
+            throw new InvalidException("The email entered is not valid.");
+        }
+        if(optionalUser2.isPresent()){
             throw new IllegalStateException("email taken");
         }
-        if(isEmailValid(user.getEmail())==false) {
-            throw new InvalidException("Email-ul introdus nu este valid.");
-        }
         if(isPasswordValid(user.getPassword())==false) {
-            throw new InvalidException("Parola introdusă nu este validă.");
+            throw new InvalidException("The password entered is not valid.");
         }
         userRepository.save(user);
     }
 
+    public boolean loginUserS(User user) throws InvalidException  {
+        Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
+        if(isEmailValid(user.getEmail())==false) {
+            throw new InvalidException("The email entered is not valid.");
+        }
+        if(optionalUser.isEmpty()){
+            throw new IllegalStateException("user not found");
+        }
+        if(isPasswordValid(user.getPassword())==false) {
+            throw new InvalidException("The password entered is not valid.");
+        }
+        String password=userRepository.getPasswordByEmail(user.getEmail());
+        if(!password.equals(user.getPassword()))
+        {
+            throw new InvalidException("incorrect password");
+        }
+        return true;
+    }
+
+    public void modifyUserByAdminId( User admin,Boolean is_admin,Long id,String email,String name,String password) throws InvalidException
+    {
+        Optional<User> optionalAdmin = userRepository.findUserById(admin.getId());
+        Optional<User> optionalUser = userRepository.findUserById(id);
+        if(optionalAdmin.isEmpty()){
+            throw new IllegalStateException("admin not found");
+        }
+        if(admin.getAdmin()==false)
+        {
+            throw new IllegalStateException("illegal action");
+        }
+        if(optionalUser.isEmpty()){
+            throw new IllegalStateException("user not found");
+        }
+        if(isEmailValid(email)==false) {
+            throw new InvalidException("The email entered is not valid.");
+        }
+        if(isPasswordValid(password)==false) {
+            throw new InvalidException("The password entered is not valid.");
+        }
+        if(email.length()!=0)
+        {
+            userRepository.editEmail(id,email);
+        }
+        if(password.length()!=0)
+        {
+            userRepository.editPassword(id,password);
+        }
+        if(name.length()!=0)
+        {
+            userRepository.editName(id,name);
+        }
+        if(is_admin.equals(true))
+        {
+            userRepository.editAdmin(id,is_admin);
+        }
+    }
+    public void modifyUserId(User user, String email, String name, String password)  throws InvalidException  {
+        Optional<User> optionalUser = userRepository.findUserById(user.getId());
+        Optional<User> optionalUser2 = userRepository.findUserByEmail(user.getEmail());
+        if(optionalUser.isEmpty()){
+            throw new IllegalStateException("user not found");
+        }
+        if(isPasswordValid(email)==false) {
+            throw new InvalidException("The password entered is not valid.");
+        }
+        if(optionalUser2.isPresent()){
+            throw new IllegalStateException("email taken");
+        }
+        if(isPasswordValid(password)==false) {
+            throw new InvalidException("The password entered is not valid.");
+        }
+        if(email.length()!=0)
+        {
+            userRepository.editEmail(user.getId(),email);
+        }
+        if(password.length()!=0)
+        {
+            userRepository.editPassword(user.getId(),password);
+        }
+        if(name.length()!=0)
+        {
+            userRepository.editName(user.getId(),name);
+        }
+    }
     public void deleteUser(Long userId) {
         boolean exists = userRepository.existsById(userId);
         if(!exists){
@@ -59,5 +148,7 @@ public class UserService {
         Matcher matcher = PASSWORD_PATTERN.matcher(password);
         return matcher.matches();
     }
+
+
 }
 
