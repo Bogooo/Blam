@@ -17,7 +17,7 @@ const schema = yup.object({
   pass: yup.string().required().min(8, 'Password must be at least 8 characters').matches(
     // Regular expression for validating password criteria
     /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[A-Za-z0-9!@#$%^&*()_+]{8,}$/,
-    'Invalid password format: Minimum 8 characters, at least one uppercase letter, one number, and one special character'
+    'Invalid password format  : Minimum 8 characters, at least one uppercase letter, one number, and one special character'
   ),
   isAdmin: yup.bool()
 }).required()
@@ -80,7 +80,7 @@ function UserEdit ({ selectedUser, setRefresh }) {
     }
   }, [user])
 
-  return <div className="border-4 rounded-xl border-cyan-600 bg-slate-950 p-10 h-full">
+  return <div className="border-4 rounded-xl  border-cyan-600 bg-slate-950 p-10 h-full">
     <h2 className="text-3xl text-blue-500 underline my-2">Account</h2>
     <form className="flex flex-col gap-2 text-xl text-cyan-800" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
