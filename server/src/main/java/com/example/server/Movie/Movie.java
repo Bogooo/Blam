@@ -1,16 +1,57 @@
 package com.example.server.Movie;
 
+import java.util.ArrayList;
+
 public class Movie {
+    private  Integer year;
     private String id;
+    private String plotLine;
+    private ArrayList<String> gen;
+
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public String getPlotLine() {
+        return plotLine;
+    }
+
+    public void setPlotLine(String plotLine) {
+        this.plotLine = plotLine;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    private String author;
     private String name;
     private double rating;
     private String image;
     private String description;
     private String category;
+
+    public ArrayList<String> getGen() {
+        return gen;
+    }
+
+    public void setGen(ArrayList<String> gen) {
+        this.gen = gen;
+    }
+
     private String type;
 
     // constructor
-    public Movie(String id, String name, double rating, String image, String description,String category,String type) {
+    public Movie(String id, String name, double rating, String image, String description,String type) {
         this.id = id;
         this.name = name;
         this.rating = rating;
@@ -20,9 +61,19 @@ public class Movie {
         this.type = type;
 
     }
-    public Movie() {
 
 
+    public Movie(String id, String name, double rating, String image, String description, ArrayList<String> gen, String type, Integer year, String plotLine, String author) {
+        this.id = id;
+        this.name = name;
+        this.rating = rating;
+        this.image = image;
+        this.description = description;
+        this.type = type;
+        this.year=year;
+        this.plotLine=plotLine;
+        this.author=author;
+        this.gen=gen;
     }
 
     public String getType() {

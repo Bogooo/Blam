@@ -31,9 +31,14 @@ public class MovieController {
         return apiService.searchById(idMovie);
     }
 
-//    @GetMapping("/movie/category/{category}")
-//    public String searchByCategory(@PathVariable String category) throws Exception {
-//        return apiService.searchByCategory(category);
+    @GetMapping("/movie/idMovieDetails/{idMovie}")
+    public Movie searchByIdDetails(@PathVariable String idMovie) throws Exception {
+        return apiService.searchByIdDetails(idMovie);
+    }
+
+//    @GetMapping("/movie/idMovieDetails/{idMovie}")
+//    public String searchByIdDetails(@PathVariable String idMovie) throws Exception {
+//        return apiService.searchByIdDetails(idMovie);
 //    }
 
 
