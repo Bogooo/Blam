@@ -80,7 +80,7 @@ function UserEdit ({ selectedUser, setRefresh }) {
     }
   }, [user])
 
-  return <div className="border-4 rounded-xl border-cyan-600 bg-slate-950 p-10 h-full">
+  return <div className="border-4 rounded-xl  border-cyan-600 bg-slate-950 p-10 h-full">
     <h2 className="text-3xl text-blue-500 underline my-2">Account</h2>
     <form className="flex flex-col gap-2 text-xl text-cyan-800" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
