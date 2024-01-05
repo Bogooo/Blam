@@ -47,9 +47,9 @@ public class ApiService {
         return movies;
     }
 
-    public Movie searchById(String movieName) throws Exception {
+    public Movie searchById(String movieId) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://imdb8.p.rapidapi.com/title/auto-complete?q=" + movieName))
+                .uri(URI.create("https://imdb8.p.rapidapi.com/title/auto-complete?q=" + movieId))
                 .header("X-RapidAPI-Key", API_KEY)
                 .header("X-RapidAPI-Host", HOST)
                 .method("GET", HttpRequest.BodyPublishers.noBody())

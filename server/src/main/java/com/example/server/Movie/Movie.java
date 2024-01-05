@@ -20,6 +20,10 @@ public class Movie {
         this.type = type;
 
     }
+    public Movie() {
+
+
+    }
 
     public String getType() {
         return type;

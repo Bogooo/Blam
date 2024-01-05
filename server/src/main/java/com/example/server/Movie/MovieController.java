@@ -21,10 +21,14 @@ public class MovieController {
     public ArrayList<Movie> searchByName(@PathVariable String movieName) throws Exception {
         return apiService.searchByName(movieName);
     }
-
     @GetMapping("/movie/category/{category}")
     public ArrayList<Movie> searchByCategory(@PathVariable String category) throws Exception {
         return apiService.searchByCategory(category);
+    }
+
+    @GetMapping("/movie/idMovie/{idMovie}")
+    public Movie searchById(@PathVariable String idMovie) throws Exception {
+        return apiService.searchById(idMovie);
     }
 
 //    @GetMapping("/movie/category/{category}")
