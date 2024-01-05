@@ -1,17 +1,11 @@
 import config from '../config'
 import axios from 'axios'
-import * as https from 'https'
-import * as http from 'http'
 
-const httpAgent = new http.Agent({ keepAlive: true })
-const httpsAgent = new https.Agent({ keepAlive: true })
-class ApiClient {
+class ApiClientClass {
   constructor () {
     this.axios = axios.create({
       baseURL: config.apiBaseUrl,
-      timeout: 5000,
-      httpAgent,
-      httpsAgent
+      timeout: 5000
     })
   }
 
@@ -66,22 +60,31 @@ class ApiClient {
     )
   }
 
-  updateUserPassword (payload, callbacks) {
+  updateUserByAdmin (payload) {
     return this.doRequest(
       {
         method: 'post',
-        url: `/api/user/${payload.id}/change-password`,
+        url: '/api/admin/modifyUser',
         data: {
-          current_password: payload.current_password,
-          new_password: payload.new_password,
-          confirmed_new_password: payload.confirmed_new_password
+          user: payload.user,
+          name: payload.name,
+          email: payload.email,
+          password: payload.password
         }
-      },
-      callbacks
+      }
     )
   }
 
-  updateUserName (payload, callbacks) {
+  getUsers () {
+    return this.doRequest(
+      {
+        method: 'get',
+        url: '/api/user/'
+      }
+    )
+  }
+
+  updateUser (payload, callbacks) {
     return this.doRequest(
       {
         method: 'patch',
@@ -94,13 +97,12 @@ class ApiClient {
     )
   }
 
-  deleteUser (callbacks) {
+  deleteUser (payload) {
     return this.doRequest(
       {
         method: 'delete',
-        url: '/api/user'
-      },
-      callbacks
+        url: `/api/${payload}`
+      }
     )
   }
 
@@ -146,5 +148,5 @@ class ApiClient {
   }
 }
 
-const ApiClient = new ApiClient()
+const ApiClient = new ApiClientClass()
 export default ApiClient

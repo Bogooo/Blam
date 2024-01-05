@@ -1,7 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-function UserView () {
-  return <div className="w-full shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)] text-cyan-500 hover:bg-cyan-300 cursor-pointer flex p-2">
+UserView.propTypes = {
+  onClick: PropTypes.func.isRequired
+}
+function UserView ({ onClick }) {
+  return <div className="w-full shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)] text-cyan-500 hover:bg-cyan-300 cursor-pointer flex p-2" onClick={onClick}>
       <h3 className="text-xl w-1/2">Username</h3>
       <p className="w-1/2">email@yahoo.com</p>
   </div>
