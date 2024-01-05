@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -14,37 +14,37 @@ const schema = yup.object({
     /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
     'Invalid email format'
   ),
-  pass: yup.string().required().min(8, 'Password must be at least 8 characters').matches(
+  password: yup.string().required().min(8, 'Password must be at least 8 characters').matches(
     // Regular expression for validating password criteria
     /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[A-Za-z0-9!@#$%^&*()_+]{8,}$/,
     'Invalid password format  : Minimum 8 characters, at least one uppercase letter, one number, and one special character'
   ),
-  isAdmin: yup.bool()
+  admin: yup.bool()
 }).required()
 
 UserEdit.propTypes = {
-  selectedUser: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   setRefresh: PropTypes.func.isRequired
 }
-const initialUser = {
-  id: -1,
-  name: '',
-  email: '',
-  admin: false,
-  password: ''
-}
 
-function UserEdit ({ selectedUser, setRefresh }) {
-  const [user, setUser] = useState(initialUser)
+function UserEdit ({ user, setRefresh }) {
   const [load, setLoad] = useState(false)
   const [create, setCreate] = useState(false)
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema) })
 
-  const onSubmit = useCallback(async (obj) => {
+  useEffect(() => {
+    setValue('name', user.name)
+    setValue('email', user.email)
+    setValue('password', user.password)
+    setValue('admin', user.admin)
+  }, [user])
+
+  const onSubmit = async (obj) => {
     if (create) {
       setLoad(true)
       await ApiClient.register({
@@ -61,22 +61,25 @@ function UserEdit ({ selectedUser, setRefresh }) {
         name: obj.name,
         email: obj.email,
         password: obj.password,
-        confirmed_password: obj.password
+        admin: obj.admin
       })
       setLoad(false)
     }
-  }, [create])
-
-  if (selectedUser != null) {
-    setUser(selectedUser)
+    setRefresh(true)
   }
 
-  const handleClear = useCallback(() => { setUser(initialUser) }, [])
+  const handleClear = useCallback(() => {
+    setValue('name', '')
+    setValue('email', '')
+    setValue('password', '')
+    setValue('admin', false)
+  }, [])
   const handleDelete = useCallback(async () => {
     if (user.id >= -1) {
       setLoad(true)
       await ApiClient.deleteUser(user?.id)
       setLoad(false)
+      setRefresh(true)
     }
   }, [user])
 
@@ -94,13 +97,13 @@ function UserEdit ({ selectedUser, setRefresh }) {
         </div>
 
         <div className="flex flex-col">
-          <input className="rounded  focus:outline-none" defaultValue={user.password} {...register('pass')} />
+          <input className="rounded  focus:outline-none" defaultValue={user.password} {...register('password')} />
           {(errors.pass && <span className="text-pink-600 text-sm">Password required</span>) || <div className="h-5"/>}
         </div>
 
         <div>
           <label className="text-white pr-2">Admin</label>
-          <input className="" defaultValue={user.admin} type="checkbox" {...register('isAdmin')}/>
+          <input className="" defaultValue={user.admin} type="checkbox" {...register('admin')}/>
         </div>
         <div className="flex flex-wrap justify-around text-black text-center w-full">
           <Button type={'button'} className="p-3 bg-cyan-300 rounded-xl focus:outline-none" onClick={handleClear}>Clear</Button>

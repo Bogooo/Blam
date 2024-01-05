@@ -17,14 +17,12 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'post',
-        url: '/api/register',
+        url: '/api/user',
         data: {
-          registration_form: {
-            name: payload.name,
-            email: payload.email,
-            password: payload.password,
-            confirmed_password: payload.confirmed_password
-          }
+          name: payload.name,
+          email: payload.email,
+          password: payload.password,
+          confirmed_password: payload.confirmed_password
         }
       },
       callbacks
@@ -63,13 +61,14 @@ class ApiClientClass {
   updateUserByAdmin (payload) {
     return this.doRequest(
       {
-        method: 'post',
-        url: '/api/admin/modifyUser',
+        method: 'put',
+        url: '/api/user/admin/modifyUser',
         data: {
           user: payload.user,
           name: payload.name,
           email: payload.email,
-          password: payload.password
+          password: payload.password,
+          is_admin: payload.admin
         }
       }
     )
@@ -79,7 +78,7 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'get',
-        url: '/api/user/'
+        url: '/api/user'
       }
     )
   }
@@ -101,25 +100,14 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'delete',
-        url: `/api/${payload}`
+        url: `/api/user/${payload}`
       }
-    )
-  }
-
-  resetPassword (payload, callbacks) {
-    return this.doRequest(
-      {
-        method: 'post',
-        url: '/api/reset-password',
-        data: payload
-      },
-      callbacks
     )
   }
 
   doRequest (options, callbacks) {
     if (!callbacks) {
-      return this.axios(options).then((response) => { return response.data.data })
+      return this.axios(options).then((response) => { return response.data })
         .catch((error) => {
           return error
         })

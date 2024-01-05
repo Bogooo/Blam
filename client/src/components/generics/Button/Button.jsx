@@ -13,7 +13,7 @@ Button.propTypes = {
 Button.defaultProps = {
   className: '',
   isLoading: false,
-  isDisabled: '',
+  isDisabled: false,
   type: 'submit',
   onClick: () => {}
 }
