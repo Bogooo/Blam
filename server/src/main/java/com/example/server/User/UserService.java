@@ -65,17 +65,10 @@ public class UserService {
         return true;
     }
 
-    public void modifyUserByAdminId( User admin,Boolean is_admin,Long id,String email,String name,String password) throws InvalidException
+    public void modifyUserByAdminId( Boolean is_admin,Long id,String email,String name,String password) throws InvalidException
     {
-        Optional<User> optionalAdmin = userRepository.findUserById(admin.getId());
         Optional<User> optionalUser = userRepository.findUserById(id);
-        if(optionalAdmin.isEmpty()){
-            throw new IllegalStateException("admin not found");
-        }
-        if(admin.getAdmin()==false)
-        {
-            throw new IllegalStateException("illegal action");
-        }
+
         if(optionalUser.isEmpty()){
             throw new IllegalStateException("user not found");
         }
@@ -151,4 +144,3 @@ public class UserService {
 
 
 }
-

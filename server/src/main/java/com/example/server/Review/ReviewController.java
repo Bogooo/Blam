@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/review")
+@RequestMapping(path = "api/v1/review")
 public class ReviewController {
     private final ReviewService reviewService;
 
@@ -31,4 +31,3 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
     }
 }
-

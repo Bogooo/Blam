@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/user")
+@RequestMapping(path = "api/v1/user")
 public class UserController {
     private final UserService userService;
 
@@ -38,9 +38,9 @@ public class UserController {
     }
 
     @PutMapping("/admin/modifyUser")
-    public void modifyUserByAdmin(@RequestBody User admin,Boolean is_admin,Long id,String email,String name,String password){
+    public void modifyUserByAdmin(@RequestBody Boolean is_admin,Long id,String email,String name,String password){
         try {
-            this.userService.modifyUserByAdminId(admin,is_admin,id,email,name, password);
+            this.userService.modifyUserByAdminId(is_admin,id,email,name, password);
         } catch (InvalidException e) {
             System.out.println(e.getMessage());
         }
