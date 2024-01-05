@@ -22,7 +22,8 @@ class ApiClientClass {
           name: payload.name,
           email: payload.email,
           password: payload.password,
-          confirmed_password: payload.confirmed_password
+          confirmed_password: payload.confirm_password,
+          is_admin: false
         }
       },
       callbacks
@@ -37,21 +38,6 @@ class ApiClientClass {
         data: {
           username: payload.username,
           password: payload.password
-        }
-      },
-      callbacks
-    )
-  }
-
-  loginWithGoogle (code, callbacks) {
-    return this.doRequest(
-      {
-        method: 'post',
-        url: '/api/google/check',
-        data: {
-          google_login_form: {
-            code
-          }
         }
       },
       callbacks

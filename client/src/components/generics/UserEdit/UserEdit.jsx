@@ -88,17 +88,17 @@ function UserEdit ({ user, setRefresh }) {
     <form className="flex flex-col gap-2 text-xl text-cyan-800" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
           <input className="rounded  focus:outline-none" defaultValue={user.name} {...register('name')} />
-          {(errors.name && <span className="text-pink-600 text-sm">Username required</span>) || <div className="h-5"/>}
+          {(errors.name && <span className="text-pink-600 text-sm">{errors.name.message}</span>) || <div className="h-5"/>}
         </div>
 
         <div className="flex flex-col">
           <input className="rounded  focus:outline-none" defaultValue={user.email} {...register('email')} />
-          {(errors.email && <span className="text-pink-600 text-sm">Email required</span>) || <div className="h-5"/>}
+          {(errors.email && <span className="text-pink-600 text-sm">{errors.email.message}</span>) || <div className="h-5"/>}
         </div>
 
         <div className="flex flex-col">
           <input className="rounded  focus:outline-none" defaultValue={user.password} {...register('password')} />
-          {(errors.pass && <span className="text-pink-600 text-sm">Password required</span>) || <div className="h-5"/>}
+          {(errors.password && <span className="text-pink-600 text-sm">{errors.password.message}</span>) || <div className="h-5"/>}
         </div>
 
         <div>
