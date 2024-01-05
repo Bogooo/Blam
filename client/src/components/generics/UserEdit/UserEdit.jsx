@@ -17,7 +17,7 @@ const schema = yup.object({
   pass: yup.string().required().min(8, 'Password must be at least 8 characters').matches(
     // Regular expression for validating password criteria
     /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[A-Za-z0-9!@#$%^&*()_+]{8,}$/,
-    'Invalid password format: Minimum 8 characters, at least one uppercase letter, one number, and one special character'
+    'Invalid password format  : Minimum 8 characters, at least one uppercase letter, one number, and one special character'
   ),
   isAdmin: yup.bool()
 }).required()
