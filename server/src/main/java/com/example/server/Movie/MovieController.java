@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 public class MovieController {
@@ -17,7 +18,20 @@ public class MovieController {
     }
 
     @GetMapping("/movie/{movieName}")
-    public void searchByName(@PathVariable String movieName) throws Exception {
-         apiService.searchByName(movieName);
+    public ArrayList<Movie> searchByName(@PathVariable String movieName) throws Exception {
+        return apiService.searchByName(movieName);
     }
+
+    @GetMapping("/movie/category/{category}")
+    public ArrayList<Movie> searchByCategory(@PathVariable String category) throws Exception {
+        return apiService.searchByCategory(category);
+    }
+
+//    @GetMapping("/movie/category/{category}")
+//    public String searchByCategory(@PathVariable String category) throws Exception {
+//        return apiService.searchByCategory(category);
+//    }
+
+
+
 }
