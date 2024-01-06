@@ -34,9 +34,9 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'post',
-        url: '/api/login',
+        url: '/api/v1/user/login',
         data: {
-          username: payload.username,
+          username: payload.email,
           password: payload.password
         }
       },

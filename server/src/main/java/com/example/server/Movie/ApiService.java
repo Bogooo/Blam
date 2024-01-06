@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ApiService {
-    private static final String API_KEY = "81aa418e70msh5df0bcc0214f3cbp10632djsnd4c59f3e3cd8";
+    private static final String API_KEY = "61ebd8850dmsh147514a29ee0e44p1e8282jsnb4824aefe861";
     private static final String HOST = "imdb8.p.rapidapi.com";
     public ArrayList<Movie> searchByName(String movieName) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()

@@ -43,7 +43,7 @@ function LoginForm ({ close }) {
           </div>
           <div className="flex flex-col">
               <label className="text-left">Password:</label>
-              <input className="rounded  focus:outline-none" {...register('password')} />
+              <input type='password' className="rounded  focus:outline-none" {...register('password')} />
               {(errors.password && <span className="text-pink-600 text-sm">{errors?.password.message}</span>) ||
                   <div className="h-5"/>}
           </div>
