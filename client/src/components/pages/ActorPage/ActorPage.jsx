@@ -1,7 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import image from '../../../assets/BradPitt.png'
+import ApiClient from '../../../libs/api/ApiClient'
+import LoadingActorMovie from '../../generics/LoadingActorMovie'
+
 function ActorPage () {
+  const [actor, setActor] = useState({})
+  const [loading, setLoading] = useState(false)
+  console.log(actor)
+  useEffect(() => {
+    const fetchActor = async () => {
+      setLoading(true)
+      try {
+        const res = await ApiClient.getActor()
+        if (res && res.length > 0) {
+          setActor(res)
+        } else {
+          console.log('No users found.')
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error)
+      }
+      setLoading(false)
+    }
+    fetchActor()
+  }, [])
+
   return (
+    (loading && <LoadingActorMovie/>) ||
         <div className="w-full h-full overflow-hidden">
             <div className="w-2/3 h-full p-6">
                 <div className="h-1/2 flex flex-row gap-4">

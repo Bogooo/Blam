@@ -27,7 +27,7 @@ function UsersList ({ setUser, setRefresh, refresh }) {
     }
     setRefresh(false)
     fetchUsers()
-  }, [refresh]) // Include any dependencies that should trigger a refresh
+  }, [refresh])
 
   const renderedUsers = users.map((user, index) => (
       <UserView key={index} onClick={() => setUser(user)} user={user}/>

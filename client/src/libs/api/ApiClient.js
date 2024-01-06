@@ -5,7 +5,7 @@ class ApiClientClass {
   constructor () {
     this.axios = axios.create({
       baseURL: config.apiBaseUrl,
-      timeout: 5000
+      timeout: 10000
     })
   }
 
@@ -65,6 +65,42 @@ class ApiClientClass {
       {
         method: 'get',
         url: '/api/user'
+      }
+    )
+  }
+
+  getMoviesBySearch (payload) {
+    return this.doRequest(
+      {
+        method: 'get',
+        url: `/movie/${payload}`
+      }
+    )
+  }
+
+  getMoviesByCategory (payload) {
+    return this.doRequest(
+      {
+        method: 'get',
+        url: `/movie/category/${payload}`
+      }
+    )
+  }
+
+  getMovieById (payload) {
+    return this.doRequest(
+      {
+        method: 'get',
+        url: `/movie/idMovie/${payload}`
+      }
+    )
+  }
+
+  getActor (payload) {
+    return this.doRequest(
+      {
+        method: 'get',
+        url: `/movie/idMovie/${payload}`
       }
     )
   }

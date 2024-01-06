@@ -16,7 +16,7 @@ const getRoutes = () => ({
   },
   movie: {
     title: 'MoviePage',
-    path: '/movie',
+    path: '/movie/:id',
     element: MoviePage,
     layout: GenericLayout
   },

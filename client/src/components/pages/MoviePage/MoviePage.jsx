@@ -1,8 +1,22 @@
-import React, { useState } from 'react'
-import image from '../../../assets/batman.jpeg'
+import React, { useEffect, useState } from 'react'
+// import image from '../../../assets/batman.jpeg'
 import ActorList from '../../generics/ActorsList'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router'
+import { fetchMovieAction } from '../../../store/actions/movieActions'
+import LoadingActorMovie from '../../generics/LoadingActorMovie'
 
 function MoviePage () {
+  const dispatch = useDispatch()
+  const { data, isLoading } = useSelector(state => state.movie)
+  const { id } = useParams()
+  useEffect(() => {
+    const fetchMov = async () =>
+      dispatch(fetchMovieAction(id))
+
+    fetchMov()
+  }, [])
+
   const [userRating, setUserRating] = useState(0)
   const [feedbackMessage, setFeedbackMessage] = useState('')
   const [feedbackList, setFeedbackList] = useState([
@@ -29,10 +43,11 @@ function MoviePage () {
   }
 
   return (
+    (isLoading && <LoadingActorMovie/>) ||
         <div className="w-full h-full overflow-hidden flex">
             <div className="w-2/3 h-full p-6">
                 <div className="h-1/2 flex flex-row gap-4">
-                    <img className="h-full rounded-xl" src={image} alt="movie thumbnail" />
+                    <img className="h-full rounded-xl" src={data.image} alt="movie thumbnail" />
                     <div className="flex flex-col">
                         <h1 className="text-violet-800 text-6xl">Title</h1>
                         <p className="text-violet-400 text-2xl">
