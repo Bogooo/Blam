@@ -15,7 +15,7 @@ public class UserService {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
-    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
     @Autowired
@@ -28,12 +28,7 @@ public class UserService {
     }
 
     public void addNewUser(User user) throws InvalidException  {
-        Optional<User> optionalUser1 = userRepository.findUserById(user.getId());
         Optional<User> optionalUser2 = userRepository.findUserByEmail(user.getEmail());
-        if(optionalUser1.isPresent()){
-            throw new IllegalStateException("already registered user");
-        }
-
         if(isEmailValid(user.getEmail())==false) {
             throw new InvalidException("The email entered is not valid.");
         }
@@ -41,12 +36,12 @@ public class UserService {
             throw new IllegalStateException("email taken");
         }
         if(isPasswordValid(user.getPassword())==false) {
-            throw new InvalidException("The password entered is not valid.");
+            throw new InvalidException("The password entered is not valid. ");
         }
         userRepository.save(user);
     }
 
-    public boolean loginUserS(User user) throws InvalidException  {
+    public Optional<User> loginUserS(User user) throws InvalidException  {
         Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
         if(isEmailValid(user.getEmail())==false) {
             throw new InvalidException("The email entered is not valid.");
@@ -54,45 +49,42 @@ public class UserService {
         if(optionalUser.isEmpty()){
             throw new IllegalStateException("user not found");
         }
-        if(isPasswordValid(user.getPassword())==false) {
-            throw new InvalidException("The password entered is not valid.");
-        }
         String password=userRepository.getPasswordByEmail(user.getEmail());
         if(!password.equals(user.getPassword()))
         {
-            throw new InvalidException("incorrect password");
+            throw new InvalidException("incorrect password.");
         }
-        return true;
+        return optionalUser;
     }
 
-    public void modifyUserByAdminId( Boolean is_admin,Long id,String email,String name,String password) throws InvalidException
+    public void modifyUserByAdminId( User user) throws InvalidException
     {
-        Optional<User> optionalUser = userRepository.findUserById(id);
+        Optional<User> optionalUser = userRepository.findUserById(user.getId());
 
         if(optionalUser.isEmpty()){
             throw new IllegalStateException("user not found");
         }
-        if(isEmailValid(email)==false) {
+        if(isEmailValid(user.getEmail())==false) {
             throw new InvalidException("The email entered is not valid.");
         }
-        if(isPasswordValid(password)==false) {
+        if(isPasswordValid(user.getPassword())==false) {
             throw new InvalidException("The password entered is not valid.");
         }
-        if(email.length()!=0)
+        if(user.getEmail().length()!=0)
         {
-            userRepository.editEmail(id,email);
+            userRepository.editEmail(user.getId(), user.getEmail());
         }
-        if(password.length()!=0)
+        if(user.getPassword().length()!=0)
         {
-            userRepository.editPassword(id,password);
+            userRepository.editPassword(user.getId(),user.getPassword());
         }
-        if(name.length()!=0)
+        if(user.getName().length()!=0)
         {
-            userRepository.editName(id,name);
+            userRepository.editName(user.getId(),user.getName());
         }
-        if(is_admin.equals(true))
+        if(user.getAdmin().equals(true))
         {
-            userRepository.editAdmin(id,is_admin);
+            userRepository.editAdmin(user.getId(),user.getAdmin());
         }
     }
     public void modifyUserId(User user, String email, String name, String password)  throws InvalidException  {

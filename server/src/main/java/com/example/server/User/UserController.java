@@ -1,8 +1,11 @@
 package com.example.server.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/user")
@@ -21,6 +24,7 @@ public class UserController {
 
     @PostMapping
     public void registerUser(@RequestBody User user){
+        user.setAdmin(false);
         try {
             this.userService.addNewUser(user);
         } catch (InvalidException e) {
@@ -28,19 +32,20 @@ public class UserController {
         }
     }
     @PostMapping("/login")
-    public boolean loginUser(@RequestBody User user){
+    public ResponseEntity<?> loginUser(@RequestBody User user){
         try {
-            return this.userService.loginUserS(user);
+            Optional<User> User = this.userService.loginUserS(user);
+            return ResponseEntity.ok(User);
         } catch (InvalidException e) {
             System.out.println(e.getMessage());
-            return false;
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 
     @PutMapping("/admin/modifyUser")
-    public void modifyUserByAdmin(@RequestBody Boolean is_admin,Long id,String email,String name,String password){
+    public void modifyUserByAdmin(@RequestBody User user){
         try {
-            this.userService.modifyUserByAdminId(is_admin,id,email,name, password);
+            this.userService.modifyUserByAdminId(user);
         } catch (InvalidException e) {
             System.out.println(e.getMessage());
         }
