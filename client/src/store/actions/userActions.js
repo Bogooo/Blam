@@ -23,4 +23,12 @@ const registerAction = (data, navigate) => {
     failure: failureRequest
   })
 }
-export { loginAction, registerAction }
+
+const editAction = (data, navigate) => {
+  return ApiClient.edit(data, {
+    start: startRequest,
+    success: finishedRequest,
+    failure: failureRequest
+  })
+}
+export { loginAction, registerAction, editAction }

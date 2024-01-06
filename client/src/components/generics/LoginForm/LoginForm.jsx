@@ -33,7 +33,7 @@ function LoginForm ({ close }) {
   }
 
   return <div className="rounded-xl bg-slate-50 absolute top-24 right-4">
-      <div onClick={close} className="text-2xl text-white bg-violet-800 rounded-t-xl">-</div>
+      <div onClick={close} className="text-2xl text-white bg-violet-800 rounded-t-xl" style={{ cursor: 'pointer' }}>-</div>
       <form className="flex flex-col gap-2 text-xl text-violet-500 p-2" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col">
               <label className="text-left">Email:</label>
