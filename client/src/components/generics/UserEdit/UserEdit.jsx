@@ -38,6 +38,7 @@ function UserEdit ({ user, setRefresh }) {
   } = useForm({ resolver: yupResolver(schema) })
 
   useEffect(() => {
+    setValue('id', user.id)
     setValue('name', user.name)
     setValue('email', user.email)
     setValue('password', user.password)
@@ -57,7 +58,7 @@ function UserEdit ({ user, setRefresh }) {
     } else {
       setLoad(true)
       await ApiClient.updateUserByAdmin({
-        user,
+        id: obj.id,
         name: obj.name,
         email: obj.email,
         password: obj.password,
@@ -105,6 +106,7 @@ function UserEdit ({ user, setRefresh }) {
           <label className="text-white pr-2">Admin</label>
           <input className="" defaultValue={user.admin} type="checkbox" {...register('admin')}/>
         </div>
+        <input hidden={true} {...register('id')}/>
         <div className="flex flex-wrap justify-around text-black text-center w-full">
           <Button type={'button'} className="p-3 bg-cyan-300 rounded-xl focus:outline-none" onClick={handleClear}>Clear</Button>
           <Button isLoading={load} type={'submit'} onClick={() => setCreate(true)} className="p-3 bg-cyan-300 rounded-xl focus:outline-none">Create</Button>
@@ -115,7 +117,7 @@ function UserEdit ({ user, setRefresh }) {
 
     <h2 className="text-3xl text-blue-500 underline my-2">Reviews</h2>
     <div className="h-1/2">
-        <UserCommentsList/>
+        <UserCommentsList />
     </div>
 
   </div>

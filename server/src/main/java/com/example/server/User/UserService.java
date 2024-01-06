@@ -87,32 +87,28 @@ public class UserService {
             userRepository.editAdmin(user.getId(),user.getAdmin());
         }
     }
-    public void modifyUserId(User user, String email, String name, String password)  throws InvalidException  {
+    public void modifyUserId(User user)  throws InvalidException  {
         Optional<User> optionalUser = userRepository.findUserById(user.getId());
-        Optional<User> optionalUser2 = userRepository.findUserByEmail(user.getEmail());
         if(optionalUser.isEmpty()){
             throw new IllegalStateException("user not found");
         }
-        if(isPasswordValid(email)==false) {
+        if(isEmailValid(user.getEmail())==false) {
             throw new InvalidException("The password entered is not valid.");
         }
-        if(optionalUser2.isPresent()){
-            throw new IllegalStateException("email taken");
-        }
-        if(isPasswordValid(password)==false) {
+        if(isPasswordValid(user.getPassword())==false) {
             throw new InvalidException("The password entered is not valid.");
         }
-        if(email.length()!=0)
+        if(user.getEmail().length()!=0)
         {
-            userRepository.editEmail(user.getId(),email);
+            userRepository.editEmail(user.getId(),user.getEmail());
         }
-        if(password.length()!=0)
+        if(user.getPassword().length()!=0)
         {
-            userRepository.editPassword(user.getId(),password);
+            userRepository.editPassword(user.getId(),user.getPassword());
         }
-        if(name.length()!=0)
+        if(user.getName().length()!=0)
         {
-            userRepository.editName(user.getId(),name);
+            userRepository.editName(user.getId(),user.getName());
         }
     }
     public void deleteUser(Long userId) {

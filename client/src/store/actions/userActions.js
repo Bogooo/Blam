@@ -8,7 +8,7 @@ import { failureRequest, finishedRequest, loginSuccess, startRequest } from '../
 //   })
 // }
 
-const loginAction = (data, navigate) => {
+const loginAction = (data) => {
   return ApiClient.login(data, {
     start: startRequest,
     success: loginSuccess,
@@ -16,7 +16,7 @@ const loginAction = (data, navigate) => {
   })
 }
 
-const registerAction = (data, navigate) => {
+const registerAction = (data) => {
   return ApiClient.register(data, {
     start: startRequest,
     success: finishedRequest,
@@ -24,8 +24,8 @@ const registerAction = (data, navigate) => {
   })
 }
 
-const editAction = (data, navigate) => {
-  return ApiClient.edit(data, {
+const editAction = (data) => {
+  return ApiClient.updateUser(data, {
     start: startRequest,
     success: finishedRequest,
     failure: failureRequest

@@ -44,6 +44,7 @@ public class UserController {
 
     @PutMapping("/admin/modifyUser")
     public void modifyUserByAdmin(@RequestBody User user){
+        user.setAdmin(false);
         try {
             this.userService.modifyUserByAdminId(user);
         } catch (InvalidException e) {
@@ -51,9 +52,9 @@ public class UserController {
         }
     }
     @PutMapping("/modifyUser")
-    public void modifyUser(@RequestBody User user,String email,String name,String password){
+    public void modifyUser(@RequestBody User user){
         try {
-            this.userService.modifyUserId(user,email,name, password);
+            this.userService.modifyUserId(user);
         } catch (InvalidException e) {
             System.out.println(e.getMessage());
         }

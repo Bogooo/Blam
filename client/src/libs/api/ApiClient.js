@@ -17,7 +17,7 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'post',
-        url: '/api/user',
+        url: '/api/v1/user',
         data: {
           name: payload.name,
           email: payload.email,
@@ -48,9 +48,9 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'put',
-        url: '/api/user/admin/modifyUser',
+        url: '/api/v1/user/admin/modifyUser',
         data: {
-          user: payload.user,
+          id: payload.id,
           name: payload.name,
           email: payload.email,
           password: payload.password,
@@ -64,7 +64,7 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'get',
-        url: '/api/user'
+        url: '/api/v1/user'
       }
     )
   }
@@ -87,12 +87,12 @@ class ApiClientClass {
     )
   }
 
-  getMovieById (payload) {
+  getMovieById (payload, callbacks) {
     return this.doRequest(
       {
         method: 'get',
         url: `/movie/idMovie/${payload}`
-      }
+      }, callbacks
     )
   }
 
@@ -105,16 +105,18 @@ class ApiClientClass {
     )
   }
 
-  updateUser (payload, callbacks) {
+  updateUser (payload) {
     return this.doRequest(
       {
-        method: 'patch',
-        url: `/api/user/${payload.id}`,
+        method: 'put',
+        url: '/api/v1/user/modifyUser',
         data: {
-          name: payload.name
+          id: payload.id,
+          name: payload.name,
+          email: payload.email,
+          password: payload.password
         }
-      },
-      callbacks
+      }
     )
   }
 
@@ -122,7 +124,7 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'delete',
-        url: `/api/user/${payload}`
+        url: `/api/v1/user/${payload}`
       }
     )
   }
