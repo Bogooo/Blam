@@ -7,7 +7,22 @@ public class Movie {
     private String id;
     private String plotLine;
     private ArrayList<String> gen;
+    private String author;
+    private String name;
+    private double rating;
+    private String image;
+    private String description;
+    private String category;
+    private String type;
+    private ArrayList<Actor> actors;
 
+    public ArrayList<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(ArrayList<Actor> actors) {
+        this.actors = actors;
+    }
 
     public Integer getYear() {
         return year;
@@ -33,12 +48,7 @@ public class Movie {
         this.author = author;
     }
 
-    private String author;
-    private String name;
-    private double rating;
-    private String image;
-    private String description;
-    private String category;
+
 
     public ArrayList<String> getGen() {
         return gen;
@@ -48,7 +58,7 @@ public class Movie {
         this.gen = gen;
     }
 
-    private String type;
+
 
     // constructor
     public Movie(String id, String name, double rating, String image, String description,String type) {
@@ -63,7 +73,7 @@ public class Movie {
     }
 
 
-    public Movie(String id, String name, double rating, String image, String description, ArrayList<String> gen, String type, Integer year, String plotLine, String author) {
+    public Movie(String id, String name, double rating, String image, String description, ArrayList<String> gen, String type, Integer year, String plotLine, String author,ArrayList<Actor> actors) {
         this.id = id;
         this.name = name;
         this.rating = rating;
@@ -74,6 +84,7 @@ public class Movie {
         this.plotLine=plotLine;
         this.author=author;
         this.gen=gen;
+        this.actors=actors;
     }
 
     public String getType() {

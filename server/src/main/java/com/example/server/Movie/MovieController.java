@@ -18,8 +18,8 @@ public class MovieController {
     }
 
     @GetMapping("/movie/{movieName}")
-    public ArrayList<Movie> searchByName(@PathVariable String movieName) throws Exception {
-        return apiService.searchByName(movieName);
+    public  ArrayList<Movie> searchByName(@PathVariable String movieName) throws Exception {
+            return apiService.searchByName(movieName);
     }
     @GetMapping("/movie/category/{category}")
     public ArrayList<Movie> searchByCategory(@PathVariable String category) throws Exception {
@@ -36,9 +36,15 @@ public class MovieController {
         return apiService.searchByIdDetails(idMovie);
     }
 
-//    @GetMapping("/movie/idMovieDetails/{idMovie}")
-//    public String searchByIdDetails(@PathVariable String idMovie) throws Exception {
-//        return apiService.searchByIdDetails(idMovie);
+
+//    @GetMapping("/actor/{idActor}")
+//    public Actor search(@PathVariable String idActor) throws Exception {
+//        return apiService.search(idActor);
+//    }
+
+//    @GetMapping("/movie/{movieName}")
+//    public String searchByName(@PathVariable String movieName) throws Exception {
+//            return apiService.searchByName(movieName);
 //    }
 
 

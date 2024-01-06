@@ -19,31 +19,57 @@ public class ApiService {
     private static final String API_KEY = "61ebd8850dmsh147514a29ee0e44p1e8282jsnb4824aefe861";
     private static final String HOST = "imdb8.p.rapidapi.com";
     public ArrayList<Movie> searchByName(String movieName) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://imdb8.p.rapidapi.com/auto-complete?q=" + movieName))
-                .header("X-RapidAPI-Key", API_KEY)
-                .header("X-RapidAPI-Host", HOST)
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        if(!movieName.equals("rec")) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://imdb8.p.rapidapi.com/auto-complete?q=" + movieName))
+                    .header("X-RapidAPI-Key", API_KEY)
+                    .header("X-RapidAPI-Host", HOST)
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(response.body());
+            ArrayList<Movie> movies = new ArrayList<>();
+            for (JsonNode movieNode : rootNode.path("d")) {
+                String id = movieNode.path("id").asText();
+                String name = movieNode.path("l").asText();
+                double rating = movieNode.path("rank").asDouble();
+                String image = movieNode.path("i").path("imageUrl").asText();
+                String description = movieNode.path("s").asText();
+                String type = movieNode.path("qid").asText();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.readTree(response.body());
+                Movie movie = new Movie(id, name, rating, image, description, type);
+                movies.add(movie);
+            }
+            return movies;
+        }
+        else
+        {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://imdb8.p.rapidapi.com/title/get-most-popular-movies?homeCountry=US&currentCountry=US&purchaseCountry=US&limit=5"))
+                    .header("X-RapidAPI-Key", API_KEY)
+                    .header("X-RapidAPI-Host", HOST)
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = response.body();
+            String[] movieIds = responseBody.split(",");
+            movieIds[0] = movieIds[0].substring(9, movieIds[0].length() - 2);
+            for (int i = 1; i < movieIds.length-1; i++) {
+                movieIds[i] = movieIds[i].substring(8, movieIds[i].length() - 2);
+            }
+            movieIds[ movieIds.length-1] = movieIds[ movieIds.length-1].substring(8, movieIds[ movieIds.length-1].length() - 3);
 
-        ArrayList<Movie> movies = new ArrayList<>();
-        for (JsonNode movieNode : rootNode.path("d")) {
-            String id = movieNode.path("id").asText();
-            String name = movieNode.path("l").asText();
-            double rating = movieNode.path("rank").asDouble();
-            String image = movieNode.path("i").path("imageUrl").asText();
-            String description = movieNode.path("s").asText();
-            String type = movieNode.path("qid").asText();
-
-            Movie movie = new Movie(id, name, rating, image, description,type);
-            movies.add(movie);
+            ArrayList<Movie> movies = new ArrayList<>();
+            int i=0;
+            Iterator<String> iterator = Arrays.asList(movieIds).iterator();
+            while (iterator.hasNext() && i<5) {
+                movies.add(searchById(iterator.next()));
+                i++;
+            }
+            return movies;
         }
 
-        return movies;
     }
 
     public Movie searchById(String movieId) throws Exception {
@@ -71,11 +97,13 @@ public class ApiService {
 
     }
 
+
+
     public Movie searchByIdDetails(String movieId) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieId+"&currentCountry=US"))
-                .header("X-RapidAPI-Key", "2f266c6eaemsheb6b73f2948a996p19caf1jsn5d668e759d34")
-                .header("X-RapidAPI-Host", "imdb8.p.rapidapi.com")
+                .header("X-RapidAPI-Key", API_KEY)
+                .header("X-RapidAPI-Host", HOST)
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -98,16 +126,39 @@ public class ApiService {
         String plotLine = rootNode.path("plotOutline").path("text").asText();
         String description = rootNode.path("plotSummary").path("text").asText();
         String author=rootNode.path("author").path("text").asText();
-        Movie movie = new Movie(id, name, rating, image, description, gen,type,year,plotLine,author);
+//        actori
+
+        HttpRequest requestActors = HttpRequest.newBuilder()
+                .uri(URI.create("https://imdb8.p.rapidapi.com/title/get-top-cast?tconst="+movieId))
+                .header("X-RapidAPI-Key", API_KEY)
+                .header("X-RapidAPI-Host", HOST)
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> responseActors = HttpClient.newHttpClient().send(requestActors, HttpResponse.BodyHandlers.ofString());
+        String responseBody = responseActors.body();
+        String[] actorsIds = responseBody.split(",");
+        actorsIds[0] = actorsIds[0].substring(8, actorsIds[0].length() - 2);
+        for (int i = 1; i <10; i++) {
+            actorsIds[i] = actorsIds[i].substring(7, actorsIds[i].length() - 2);
+        }
+
+        ArrayList<Actor> actors = new ArrayList<>();
+        int i=0;
+        Iterator<String> iterator = Arrays.asList(actorsIds).iterator();
+        while (iterator.hasNext() && i<10) {
+            actors.add(searchByIdActor(iterator.next()));
+            i++;
+        }
+        Movie movie = new Movie(id, name, rating, image, description, gen,type,year,plotLine,author,actors);
         return movie;
 
 
     }
     public ArrayList<Movie> searchByCategory(String category) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://imdb8.p.rapidapi.com/title/v2/get-popular-movies-by-genre?genre="+category+"&limit=15"))
-                .header("X-RapidAPI-Key", "81aa418e70msh5df0bcc0214f3cbp10632djsnd4c59f3e3cd8")
-                .header("X-RapidAPI-Host", "imdb8.p.rapidapi.com")
+                .uri(URI.create("https://imdb8.p.rapidapi.com/title/v2/get-popular-movies-by-genre?genre="+category+"&limit=10"))
+                .header("X-RapidAPI-Key", API_KEY)
+                .header("X-RapidAPI-Host", HOST)
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -128,18 +179,87 @@ public class ApiService {
 
         return movies;
     }
+    public Actor searchByIdActor(String actorId) throws Exception {
 
-//    public String searchByIdDetails(String movieId) throws Exception {
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create("https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieId+"&currentCountry=US"))
-//                .header("X-RapidAPI-Key", "2f266c6eaemsheb6b73f2948a996p19caf1jsn5d668e759d34")
-//                .header("X-RapidAPI-Host", "imdb8.p.rapidapi.com")
-//                .method("GET", HttpRequest.BodyPublishers.noBody())
-//                .build();
-//        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-//        String responseBody = response.body();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://imdb8.p.rapidapi.com/actors/get-bio?nconst="+actorId))
+                .header("X-RapidAPI-Key", API_KEY)
+                .header("X-RapidAPI-Host", HOST)
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(response.body());
+
+
+        String name = rootNode.path("name").asText();
+        String image = rootNode.path("image").path("url").asText();
+
+        Actor actor = new Actor(actorId, name, image);
+        return actor;
+
+    }
+
+    public Actor searchByIdActorDetails(String actorId) throws Exception {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://imdb8.p.rapidapi.com/actors/get-bio?nconst="+actorId))
+                .header("X-RapidAPI-Key", API_KEY)
+                .header("X-RapidAPI-Host", HOST)
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(response.body());
+
+
+        String name = rootNode.path("name").asText();
+        String image = rootNode.path("image").path("url").asText();
+        String birthDate=rootNode.path("birthDate").asText();
+        String birthPlace=rootNode.path("birthPlace").asText();
+        String gender=rootNode.path("gender").asText();
+//        String bio= rootNode.path("miniBios").path("text").asText();
+
+        String bio="";
+        JsonNode miniBiosArray = rootNode.path("miniBios");
+        if (miniBiosArray.isArray() && miniBiosArray.size() > 0) {
+            JsonNode firstMiniBio = miniBiosArray.get(0);
+            bio = firstMiniBio.path("text").asText();
+        }
+
+        Actor actor = new Actor(actorId, name, birthDate, birthPlace,  gender,  bio,  image);
+        return actor;
+
+    }
+
+//    public Actor search(String idActor) throws Exception {
+////        HttpRequest requestActors = HttpRequest.newBuilder()
+////                .uri(URI.create("https://imdb8.p.rapidapi.com/title/get-top-cast?tconst="+movieId))
+////                .header("X-RapidAPI-Key", API_KEY)
+////                .header("X-RapidAPI-Host", HOST)
+////                .method("GET", HttpRequest.BodyPublishers.noBody())
+////                .build();
+////        HttpResponse<String> responseActors = HttpClient.newHttpClient().send(requestActors, HttpResponse.BodyHandlers.ofString());
+////        String responseBody = responseActors.body();
+////        String[] actorsIds = responseBody.split(",");
+////        actorsIds[0] = actorsIds[0].substring(8, actorsIds[0].length() - 2);
+////        for (int i = 1; i <10; i++) {
+////            actorsIds[i] = actorsIds[i].substring(7, actorsIds[i].length() - 2);
+////        }
+//        Actor actor=searchByIdActor(idActor);
 //
-//        return responseBody;
+////        ArrayList<Actor> actors = new ArrayList<>();
+////        int i=0;
+////        Iterator<String> iterator = Arrays.asList(actorsIds).iterator();
+////        while (iterator.hasNext() && i<10) {
+////            actors.add(searchByIdActor(iterator.next()));
+////            i++;
+////        }
+//
+//
+//        return actor;
 //    }
 
 }
