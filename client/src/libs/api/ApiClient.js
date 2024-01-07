@@ -5,7 +5,7 @@ class ApiClientClass {
   constructor () {
     this.axios = axios.create({
       baseURL: config.apiBaseUrl,
-      timeout: 10000
+      timeout: 30000
     })
   }
 
@@ -91,7 +91,7 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'get',
-        url: `/movie/idMovie/${payload}`
+        url: `/movie/idMovieDetails/${payload}`
       }, callbacks
     )
   }
@@ -148,7 +148,7 @@ class ApiClientClass {
             return dispatch(failure(response.data.error))
           }
           if (success) {
-            return dispatch(success(response.data.data))
+            return dispatch(success(response.data))
           }
         })
         .catch((error) => {

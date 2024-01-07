@@ -36,7 +36,7 @@ function FilmItem ({ id, title, image, description, genres, rating }) {
         <h1 className='truncate'>{title}</h1>
         <p className="flex flex-row"><FaStar />{rat}</p>
       </div>
-      <h3 className='truncate'>{genres}</h3>
+      <h3 className='truncate'>{genres | ''}</h3>
       <p className='truncate'>{description}</p>
     </div>
   </div>

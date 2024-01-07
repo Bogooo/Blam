@@ -114,7 +114,7 @@ public class ApiService {
         String id = rootNode.path("id").asText();
         String name = rootNode.path("l").asText();
         double rating = rootNode.path("rank").asDouble();
-        String image = rootNode.path("i").path("imageUrl").asText();
+        String image = rootNode.path("title").path("image").path("url").asText();
         String category = rootNode.path("genre").asText();
         String type = rootNode.path("qid").asText();
         Integer year=rootNode.path("year").asInt();

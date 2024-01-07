@@ -22,7 +22,7 @@ const getRoutes = () => ({
   },
   actor: {
     title: 'ActorPage',
-    path: '/actor',
+    path: '/actor/:id',
     element: ActorPage,
     layout: GenericLayout
   },

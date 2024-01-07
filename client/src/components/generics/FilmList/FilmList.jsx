@@ -15,7 +15,8 @@ function FilmList () {
         if (category) {
           res = await ApiClient.getMoviesByCategory(category)
         } else {
-          res = await ApiClient.getMoviesBySearch(searchText)
+          const text = searchText === '' ? 'rec' : searchText
+          res = await ApiClient.getMoviesBySearch(text)
         }
         if (res && res.length > 0) {
           setMovies(res)
@@ -32,7 +33,7 @@ function FilmList () {
   }, [category, searchText])
 
   const renderedMovies = movies.map((movie, index) => (
-      <FilmItem key={index} id={movie.id} title={movie.name} genres={movie.category} rating={movie.rating} description={movie.description} image={movie.image}/>
+      <FilmItem key={index} id={movie.id} title={movie.name} genres={movie.gen} rating={movie.rating} description={movie.description} image={movie.image}/>
   ))
 
   return <div className="grid grid-cols-5 gap-6 py-6 px-20 w-full h-full overflow-x-hidden overflow-y-scroll scrollbar scrollbar-thumb-purple-950 scrollbar-thumb-rounded-full ">

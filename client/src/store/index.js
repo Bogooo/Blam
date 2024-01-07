@@ -8,5 +8,9 @@ export const store = configureStore({
     user: userReducer,
     search: searchReducer,
     movie: movieReducer
-  }
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false
+    })
 })
