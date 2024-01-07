@@ -1,4 +1,5 @@
 package com.example.server.Review;
+import com.example.server.User.InvalidException;
 import com.example.server.User.User;
 import com.example.server.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,25 @@ public class ReviewController {
     @GetMapping
     public List<Review> GetReviews(){
         return this.reviewService.GetReviews();
+    }
+
+    @GetMapping(path = "/review/getReviewUser")
+    public List<Review> getReviewsByUser( @RequestBody Long user){
+        return this.reviewService.getReviewsByUser(user);
+    }
+
+    @GetMapping(path = "/review/getReviewFilm")
+    public List<Review> getReviewsByFilm( @RequestBody Long film){
+        return this.reviewService.getReviewsByFilm(film);
+    }
+
+    @PutMapping(path = "/review/editReview")
+    public void editReviews(@RequestBody Long idReview,String mesaj){
+        try {
+            this.reviewService.editReviews(idReview,mesaj);
+        }catch (InvalidExceptionReview e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @PostMapping

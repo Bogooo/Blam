@@ -1,4 +1,5 @@
 package com.example.server.Review;
+import com.example.server.User.InvalidException;
 import com.example.server.User.User;
 import com.example.server.User.UserRepository;
 import com.example.server.User.UserRepository;
@@ -36,6 +37,26 @@ public class ReviewService {
         if(!exists){
             throw new IllegalStateException("review with "+reviewId+" does not exist");
         }
-        reviewRepository.deleteById(reviewId);
+        reviewRepository.deleteReview(reviewId);
+    }
+
+    public List<Review> getReviewsByUser(Long user) {
+        Optional<User> optionalUser1 = userRepository.findUserById(user);
+        if(!optionalUser1.isPresent()){
+            throw new IllegalStateException("user not found");
+        }
+        return reviewRepository.getReviewsByUser(user);
+    }
+
+    public List<Review> getReviewsByFilm(Long film) {
+        return reviewRepository.getReviewsByFilm(film);
+    }
+
+    public void editReviews(Long idReview,String mesaj) throws InvalidExceptionReview {
+        Optional<String> optionalReview = reviewRepository.findReviewById(idReview);
+        if(!optionalReview.isPresent()){
+            throw new IllegalStateException("review not found");
+        }
+        reviewRepository.editReviews(idReview,mesaj);
     }
 }
