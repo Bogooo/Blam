@@ -35,6 +35,7 @@ function RegisterForm ({ close }) {
   const onSubmit = (obj) => {
     console.log(obj)
     dispatch(registerAction(obj))
+    close()
   }
 
   return <div className="rounded-xl bg-slate-50 absolute top-24 right-4">

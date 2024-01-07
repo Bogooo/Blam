@@ -23,42 +23,73 @@ EditForm.propTypes = {
 
 function EditForm ({ close }) {
   const dispatch = useDispatch()
-  const { isLoading, error } = useSelector(state => state.user)
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({ resolver: yupResolver(schema) })
+  const { isLoading, data, error } = useSelector(state => state.user)
 
-  const onSubmit = (data) => {
-    dispatch(editAction(data))
+  // State and form logic for username modification
+  const {
+    register: registerUsername,
+    handleSubmit: handleSubmitUsername,
+    formState: { errors: errorsUsername }
+  } = useForm({ resolver: yupResolver(schema.pick('username')) })
+
+  const onSubmitUsername = (formData) => {
+    const { username } = formData
+    const obj = {
+      id: data.id,
+      name: username,
+      email: data.email,
+      password: data.password
+    }
+    dispatch(editAction(obj))
+  }
+
+  // State and form logic for password modification
+  const {
+    register: registerPassword,
+    handleSubmit: handleSubmitPassword,
+    formState: { errors: errorsPassword }
+  } = useForm({ resolver: yupResolver(schema.pick('password', 'confirmPassword')) })
+
+  const onSubmitPassword = (formData) => {
+    const { password } = formData
+    const obj = {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      password
+    }
+    dispatch(editAction(obj))
   }
 
   return (
         <div className="rounded-xl bg-slate-50 absolute top-24 right-4">
-            <div onClick={close} className="text-2xl text-white bg-violet-800 rounded-t-xl" style={{ cursor: 'pointer' }}>-</div>
-            <form className="flex flex-col gap-2 text-xl text-violet-500 p-2" onSubmit={handleSubmit(onSubmit)}>
+            <div onClick={close} className="text-2xl text-white bg-violet-800 rounded-t-xl" style={{ cursor: 'pointer' }}>-
+            </div>
+
+            {/* Username modification form */}
+            <form className="flex flex-col gap-2 text-xl text-violet-500 p-2" onSubmit={handleSubmitUsername(onSubmitUsername)}>
                 <div className="flex flex-col">
                     <label className="text-left">Username:</label>
-                    <input className="rounded focus:outline-none" placeholder="New username..." {...register('username')} />
-                    {(errors.username && <span className="text-pink-600 text-sm">{errors?.username.message}</span>) ||
-                        <div className="h-5" />}
+                    <input className="rounded focus:outline-none" placeholder="New username..." {...registerUsername('username')} />
+                    {(errorsUsername.username && <span className="text-pink-600 text-sm">{errorsUsername?.username.message}</span>) || <div className="h-5"/>}
                 </div>
+                <Button isLoading={isLoading} className="p-3 bg-violet-500 rounded-xl text-white focus:outline-none">Modify username</Button>
+            </form>
+
+            {/* Password modification form */}
+            <form className="flex flex-col gap-2 text-xl text-violet-500 p-2" onSubmit={handleSubmitPassword(onSubmitPassword)}>
                 <div className="flex flex-col">
                     <label className="text-left">Password:</label>
-                    <input type='password' className="rounded focus:outline-none" placeholder="New password" {...register('password')} />
-                    {(errors.password && <span className="text-pink-600 text-sm">{errors?.password.message}</span>) ||
-                        <div className="h-5" />}
+                    <input type='password' className="rounded focus:outline-none" placeholder="New password" {...registerPassword('password')} />
+                    {(errorsPassword.password && <span className="text-pink-600 text-sm">{errorsPassword?.password.message}</span>) || <div className="h-5"/>}
                 </div>
                 <div className="flex flex-col">
                     <label className="text-left">Confirm Password:</label>
-                    <input type='password' className="rounded focus:outline-none" placeholder="Confirm new password" {...register('confirmPassword')} />
-                    {(errors.confirmPassword && <span className="text-pink-600 text-sm">{errors?.confirmPassword.message}</span>) ||
-                        <div className="h-5" />}
+                    <input type='password' className="rounded focus:outline-none" placeholder="Confirm new password" {...registerPassword('confirmPassword')} />
+                    {(errorsPassword.confirmPassword && <span className="text-pink-600 text-sm">{errorsPassword?.confirmPassword.message}</span>) || <div className="h-5"/>}
                 </div>
-                <Button isLoading={isLoading} className="p-3 bg-violet-500 rounded-xl text-white focus:outline-none">Modify</Button>
-                {(error && <span className="text-pink-600 text-sm">Something went wrong...</span>) ||
-                    <div className="h-5" />}
+                <Button isLoading={isLoading} className="p-3 bg-violet-500 rounded-xl text-white focus:outline-none">Modify password</Button>
+                {(error && <span className="text-pink-600 text-sm">Something went wrong...</span>) || <div className="h-5"/>}
             </form>
         </div>
   )

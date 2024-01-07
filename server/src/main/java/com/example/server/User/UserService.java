@@ -87,7 +87,7 @@ public class UserService {
             userRepository.editAdmin(user.getId(),user.getAdmin());
         }
     }
-    public void modifyUserId(User user)  throws InvalidException  {
+    public Optional<User> modifyUserId(User user)  throws InvalidException  {
         Optional<User> optionalUser = userRepository.findUserById(user.getId());
         if(optionalUser.isEmpty()){
             throw new IllegalStateException("user not found");
@@ -110,6 +110,8 @@ public class UserService {
         {
             userRepository.editName(user.getId(),user.getName());
         }
+        Optional<User> optionalUser2 = userRepository.findUserByEmail(user.getEmail());
+        return optionalUser2;
     }
     public void deleteUser(Long userId) {
         boolean exists = userRepository.existsById(userId);

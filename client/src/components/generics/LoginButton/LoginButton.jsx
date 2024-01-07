@@ -4,44 +4,44 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import LoginForm from '../LoginForm'
 import RegisterForm from '../RegisterForm'
 import EditForm from '../EditForm'
-import { useSelector } from 'react-redux'
+import { BiSolidUserDetail } from 'react-icons/bi'
+import { useDispatch, useSelector } from 'react-redux'
 import logoutImage from '../../../assets/logout.png'
+import { logout } from '../../../store/slices/UserSlice'
+import { useNavigate } from 'react-router-dom'
+import { getPath } from '../../../route/RouteObject'
 
 function LoginButton () {
-  const { isAuthorized } = useSelector(state => state.user)
-  const [setSettings] = useState(false)
+  const { isAuthorized, data } = useSelector(state => state.user)
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
-
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const handleLogin = useCallback(() => {
     setShowLogin(true)
     setShowRegister(false)
-    setShowEdit(false)
   }, [])
 
   const handleRegister = useCallback(() => {
     setShowLogin(false)
     setShowRegister(true)
-    setShowEdit(false)
   }, [])
 
   const handleEdit = useCallback(() => {
-    setShowLogin(false)
-    setShowRegister(false)
     setShowEdit(true)
   }, [])
 
-  const handleSettings = useCallback(() => {
-    setSettings(true)
+  const handleAdmin = useCallback(() => {
+    navigate(getPath('admin'))
+    setShowEdit(true)
   }, [])
 
   const handleLogout = useCallback(() => {
     setShowLogin(false)
     setShowRegister(false)
     setShowEdit(false)
-    // Implementează aici logica pentru logout
-    // Exemplu: dispatch(logoutAction());
+    dispatch(logout())
   }, [])
 
   return (
@@ -55,25 +55,21 @@ function LoginButton () {
               <button className="hover:underline" onClick={handleRegister}>
                 Register
               </button>
-              |
-              <button className="hover:underline" onClick={handleEdit}>
-                Edit
-              </button>
-              |
-              <button onClick={handleLogout}>
-                <img src={logoutImage} alt="logout" style={{ width: '28px', height: '28px' }} />
-              </button>
             </div>
         )}
         {isAuthorized && (
             <div className="flex flex-row items-center gap-2">
-              <FaUser />
-              Username
-              <div className="flex-1" />
-              <BsThreeDotsVertical className="cursor-pointer" onClick={handleSettings} />
+              <FaUser/>
+              {data.name}
+              <div className="flex-1"/>
+              <BiSolidUserDetail className='text-xl cursor-pointer' onClick={handleAdmin}/>
+              <BsThreeDotsVertical className="cursor-pointer" onClick={handleEdit}/>
+              <button onClick={handleLogout}>
+                <img src={logoutImage} alt="logout" style={{ width: '28px', height: '28px' }}/>
+              </button>
             </div>
         )}
-        {showLogin && <LoginForm close={() => setShowLogin(false)} />}
+        {showLogin && <LoginForm close={() => setShowLogin(false)}/>}
         {showRegister && <RegisterForm close={() => setShowRegister(false)} />}
         {showEdit && <EditForm close={() => setShowEdit(false)} />}
       </div>

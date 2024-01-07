@@ -22,7 +22,6 @@ class ApiClientClass {
           name: payload.name,
           email: payload.email,
           password: payload.password,
-          confirmed_password: payload.confirm_password,
           is_admin: false
         }
       },
@@ -36,7 +35,7 @@ class ApiClientClass {
         method: 'post',
         url: '/api/v1/user/login',
         data: {
-          username: payload.email,
+          email: payload.email,
           password: payload.password
         }
       },
@@ -105,7 +104,7 @@ class ApiClientClass {
     )
   }
 
-  updateUser (payload) {
+  updateUser (payload, callbacks) {
     return this.doRequest(
       {
         method: 'put',
@@ -116,7 +115,7 @@ class ApiClientClass {
           email: payload.email,
           password: payload.password
         }
-      }
+      }, callbacks
     )
   }
 

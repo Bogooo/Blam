@@ -23,7 +23,7 @@ const userSlice = createSlice({
     finishedRequest (state) {
       return { ...state, isLoading: false }
     },
-    logout (state) {
+    logout () {
       return initialState
     }
   }

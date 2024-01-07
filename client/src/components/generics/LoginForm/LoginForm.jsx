@@ -30,6 +30,7 @@ function LoginForm ({ close }) {
 
   const onSubmit = (obj) => {
     dispatch(loginAction(obj))
+    close()
   }
 
   return <div className="rounded-xl bg-slate-50 absolute top-24 right-4">

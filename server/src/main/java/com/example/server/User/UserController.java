@@ -52,11 +52,13 @@ public class UserController {
         }
     }
     @PutMapping("/modifyUser")
-    public void modifyUser(@RequestBody User user){
+    public ResponseEntity<?> modifyUser(@RequestBody User user){
         try {
-            this.userService.modifyUserId(user);
+            Optional<User> User = this.userService.modifyUserId(user);
+            return ResponseEntity.ok(User);
         } catch (InvalidException e) {
             System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 

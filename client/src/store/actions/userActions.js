@@ -27,7 +27,7 @@ const registerAction = (data) => {
 const editAction = (data) => {
   return ApiClient.updateUser(data, {
     start: startRequest,
-    success: finishedRequest,
+    success: loginSuccess,
     failure: failureRequest
   })
 }
