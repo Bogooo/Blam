@@ -10,7 +10,7 @@ FilmItem.propTypes = {
   title: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  genres: PropTypes.string.isRequired,
+  genres: PropTypes.string,
   rating: PropTypes.number.isRequired
 }
 

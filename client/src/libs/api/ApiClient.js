@@ -100,7 +100,7 @@ class ApiClientClass {
     return this.doRequest(
       {
         method: 'get',
-        url: `/movie/idMovie/${payload}`
+        url: `/actor/idActorDetails/${payload}`
       }
     )
   }
