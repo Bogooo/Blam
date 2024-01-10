@@ -32,6 +32,10 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
+    public User(Long id) {
+        this.id = id;
+    }
+
     public User(String name, String email, String password, Boolean isAdmin) {
         this.name = name;
         this.email = email;

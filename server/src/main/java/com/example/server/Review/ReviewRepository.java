@@ -17,7 +17,7 @@ public interface ReviewRepository  extends JpaRepository<Review, Long> {
     List<Review> getReviewsByUser(Long id);
 
     @Query("select r from Review r where r.idFilm= ?1")
-    List<Review> getReviewsByFilm(Long film);
+    List<Review> getReviewsByFilm(String film);
 
     @Query("UPDATE Review SET mesaj = ?2 WHERE idReview =  ?1")
     void editReviews(Long idReview,String mesaj);

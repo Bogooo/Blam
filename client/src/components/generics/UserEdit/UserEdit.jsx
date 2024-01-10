@@ -34,6 +34,7 @@ function UserEdit ({ user, setRefresh }) {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors }
   } = useForm({ resolver: yupResolver(schema) })
 
@@ -117,7 +118,7 @@ function UserEdit ({ user, setRefresh }) {
 
     <h2 className="text-3xl text-blue-500 underline my-2">Reviews</h2>
     <div className="h-1/2">
-        <UserCommentsList />
+        <UserCommentsList userId={getValues('id')}/>
     </div>
 
   </div>

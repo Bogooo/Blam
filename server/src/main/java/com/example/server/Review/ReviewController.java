@@ -23,12 +23,12 @@ public class ReviewController {
     }
 
     @GetMapping(path = "/review/getReviewUser")
-    public List<Review> getReviewsByUser( @RequestBody Long user){
-        return this.reviewService.getReviewsByUser(user);
+    public List<Review> getReviewsByUser(@RequestBody User user){
+        return this.reviewService.getReviewsByUser(user.getId());
     }
 
     @GetMapping(path = "/review/getReviewFilm")
-    public List<Review> getReviewsByFilm( @RequestBody Long film){
+    public List<Review> getReviewsByFilm( @RequestBody String film){
         return this.reviewService.getReviewsByFilm(film);
     }
 
@@ -42,8 +42,8 @@ public class ReviewController {
     }
 
     @PostMapping
-    public void addReview(@RequestBody Review review,@RequestBody User user){
-        this.reviewService.addNewReview(review,user);
+    public void addReview(@RequestBody Review review){
+        this.reviewService.addNewReview(review);
     }
 
     @DeleteMapping(path = "{reviewId}")

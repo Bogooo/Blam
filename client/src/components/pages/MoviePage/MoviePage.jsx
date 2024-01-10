@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { fetchMovieAction } from '../../../store/actions/movieActions'
 import LoadingActorMovie from '../../generics/LoadingActorMovie'
+import ApiClient from '../../../libs/api/ApiClient'
 
 function MoviePage () {
   const dispatch = useDispatch()
   const { data, isLoading } = useSelector(state => state.movie)
+  const { data: user } = useSelector(state => state.user)
   const { id } = useParams()
   useEffect(() => {
     const fetchMov = async () =>
@@ -18,12 +20,12 @@ function MoviePage () {
   }, [])
   const [userRating, setUserRating] = useState(0)
   const [feedbackMessage, setFeedbackMessage] = useState('')
+  const [error, setError] = useState('')
   const [feedbackList, setFeedbackList] = useState([
-    { user: 'User1', message: 'Great movie!' },
-    { user: 'User2', message: 'Awesome storyline.' }
+    { user: 'Adelina', message: 'Great movie!' },
+    { user: 'Bogdan', message: 'Awesome storyline.' }
     // Add more feedback entries as needed
   ])
-  const [userCount, setUserCount] = useState(2)
 
   const handleRatingChange = (rating) => {
     setUserRating(rating)
@@ -34,10 +36,20 @@ function MoviePage () {
   }
 
   const handleFeedbackSubmit = () => {
-    if (feedbackMessage.trim() !== '') {
-      setFeedbackList([...feedbackList, { user: `User${userCount + 1}`, message: feedbackMessage }])
-      setFeedbackMessage('')
-      setUserCount((prevCount) => prevCount + 1)
+    if (user.name) {
+      if (feedbackMessage.trim() !== '') {
+        setFeedbackList([...feedbackList, { user: user.name, message: feedbackMessage }])
+        setFeedbackMessage('')
+        setError('')
+        ApiClient.addReview({
+          message: feedbackMessage,
+          user,
+          rating: userRating,
+          film: data.id
+        })
+      }
+    } else {
+      setError('You are not logged in')
     }
   }
 
@@ -104,7 +116,10 @@ function MoviePage () {
                         className="w-full h-32 p-2 border rounded-md"
                         placeholder="Write your feedback here..."
                     />
-                    <button onClick={handleFeedbackSubmit} className="mt-2 bg-violet-600 text-white px-4 py-2 rounded-md">Submit Feedback</button>
+                    <div className='flex flex-row gap-5 items-center'>
+                        <button onClick={handleFeedbackSubmit} className="mt-2 bg-violet-600 text-white px-4 py-2 rounded-md">Submit Feedback</button>
+                        <p className="text-pink-500 text-xl">{error}</p>
+                    </div>
                 </div>
             </div>
         </div>

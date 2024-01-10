@@ -62,7 +62,7 @@ function LoginButton () {
               <FaUser/>
               {data.name}
               <div className="flex-1"/>
-              <BiSolidUserDetail className='text-xl cursor-pointer' onClick={handleAdmin}/>
+              {data.admin && <BiSolidUserDetail className='text-xl cursor-pointer' onClick={handleAdmin}/>}
               <BsThreeDotsVertical className="cursor-pointer" onClick={handleEdit}/>
               <button onClick={handleLogout}>
                 <img src={logoutImage} alt="logout" style={{ width: '28px', height: '28px' }}/>

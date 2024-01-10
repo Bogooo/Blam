@@ -26,17 +26,17 @@ public class Review {
             strategy = GenerationType.SEQUENCE,
             generator = "idf_sequence"
     )
-    private Long idFilm;
+    private String idFilm;
 
     public Review() {
 
     }
 
-    public Long getId() {
+    public String getId() {
         return idFilm;
     }
 
-    public void setId(Long idFilm) {
+    public void setId(String idFilm) {
         this.idFilm = idFilm;
     }
 
@@ -51,16 +51,7 @@ public class Review {
                 '}';
     }
 
-    public Review(Long idFilm, String mesaj, User user, LocalDate data, Float rating, Long film) {
-        this.idFilm = idFilm;
-        this.mesaj = mesaj;
-        this.user = user;
-        this.data = data;
-        this.rating = rating;
-        this.idFilm = film;
-    }
-
-    public Review( String mesaj, User user, LocalDate data, Float rating, Long film) {
+    public Review( String mesaj, User user, LocalDate data, Float rating, String film) {
         this.mesaj = mesaj;
         this.user = user;
         this.data = data;
@@ -107,11 +98,11 @@ public class Review {
         this.rating = rating;
     }
 
-    public Long getFilm() {
+    public String getFilm() {
         return idFilm;
     }
 
-    public void setFilm(Long idFilm) {
+    public void setFilm(String  idFilm) {
         this.idFilm = idFilm;
     }
 

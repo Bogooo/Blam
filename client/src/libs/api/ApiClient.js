@@ -68,6 +68,58 @@ class ApiClientClass {
     )
   }
 
+  getCommsByUserId (payload) {
+    return this.doRequest(
+      {
+        method: 'get',
+        url: '/api/v1/review/review/getReviewUser',
+        data: {
+          user: payload
+        }
+      }
+    )
+  }
+
+  getCommsByUserMovie (payload) {
+    return this.doRequest(
+      {
+        method: 'get',
+        url: '/api/v1/review/review/getReviewFilm',
+        data: {
+          film: payload
+        }
+      }
+    )
+  }
+
+  editReview (payload) {
+    return this.doRequest(
+      {
+        method: 'put',
+        url: '/api/v1/review/review/editReview',
+        data: {
+          idReview: payload.id,
+          mesaj: payload.message
+        }
+      }
+    )
+  }
+
+  addReview (payload) {
+    return this.doRequest(
+      {
+        method: 'post',
+        url: '/api/v1/review',
+        data: {
+          mesaj: payload.message,
+          user: payload.user,
+          rating: payload.rating,
+          film: payload.film
+        }
+      }
+    )
+  }
+
   getMoviesBySearch (payload) {
     return this.doRequest(
       {
@@ -124,6 +176,15 @@ class ApiClientClass {
       {
         method: 'delete',
         url: `/api/v1/user/${payload}`
+      }
+    )
+  }
+
+  deleteReview (payload) {
+    return this.doRequest(
+      {
+        method: 'delete',
+        url: `/api/v1/review/${payload}`
       }
     )
   }

@@ -6,6 +6,7 @@ import com.example.server.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +25,8 @@ public class ReviewService {
         return this.reviewRepository.findAll();
     }
 
-    public void addNewReview(Review review,User user)  {
-        Optional<User> optionalUser = userRepository.findUserById(user.getId());
-        if(optionalUser.isPresent()){
-            throw new IllegalStateException("user doesn't exist");
-        }
+    public void addNewReview(Review review)  {
+        review.setData(LocalDate.now());
         reviewRepository.save(review);
     }
 
@@ -48,7 +46,7 @@ public class ReviewService {
         return reviewRepository.getReviewsByUser(user);
     }
 
-    public List<Review> getReviewsByFilm(Long film) {
+    public List<Review> getReviewsByFilm(String film) {
         return reviewRepository.getReviewsByFilm(film);
     }
 
